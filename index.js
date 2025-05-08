@@ -88,7 +88,7 @@ function buyMultiplier() {
   if (count >= multiplierCost) {
     count -= multiplierCost;
     multiplierLevel++;
-    multiplier *= 1.5;
+    multiplier *= 2;
 
     // Ensure baseClickPower is at least 1
     if (baseClickPower < 1) baseClickPower = 1;
@@ -102,6 +102,23 @@ function buyMultiplier() {
   }
 }
 
+function lockOtherWorkouts(unlockedWorkout) {
+  const workoutLinks = {
+    stamina: staminaLink,
+    bench: benchLink,
+    squat: squatLink
+  };
+
+  for (const [name, link] of Object.entries(workoutLinks)) {
+    if (name !== unlockedWorkout && link) {
+      link.classList.add("disabled-link");
+      link.style.pointerEvents = "none";
+      link.style.opacity = "0.5";
+    }
+  }
+}
+
+
 
 function updateDisplay() {
   countDisplay.textContent = count;
@@ -109,19 +126,36 @@ function updateDisplay() {
   autoClickerCostDisplay.textContent = autoClickerLevel >= MAX_AUTOCLICKERS ? "MAX" : autoClickerCost;
   multiplierCostDisplay.textContent = multiplierLevel >= MAX_MULTIPLIERS ? "MAX" : multiplierCost;
 
-  if (count >= WORKOUT_COSTS.stamina || unlockedWorkouts.stamina) {
-    unlockedWorkouts.stamina = true;
-    unlockLink(staminaLink);
-  }
-  if (count >= WORKOUT_COSTS.bench || unlockedWorkouts.bench) {
-    unlockedWorkouts.bench = true;
-    unlockLink(benchLink);
-  }
-  if (count >= WORKOUT_COSTS.squat || unlockedWorkouts.squat) {
-    unlockedWorkouts.squat = true;
-    unlockLink(squatLink);
+  // Unlock only one workout
+  const unlocked = Object.entries(unlockedWorkouts).find(([_, isUnlocked]) => isUnlocked);
+  
+  if (unlocked) {
+    const [unlockedName] = unlocked;
+    
+    // Unlock the selected one
+    if (unlockedName === "stamina") unlockLink(staminaLink);
+    if (unlockedName === "bench") unlockLink(benchLink);
+    if (unlockedName === "squat") unlockLink(squatLink);
+
+    // Remove price tag
+    const link = document.getElementById(`${unlockedName}-link`);
+    const costTag = link?.querySelector('.cost');
+    if (costTag) costTag.remove();
+
+    // Lock all other workouts
+    lockOtherWorkouts(unlockedName);
+  } else {
+    // If none unlocked yet, unlock based on count
+    if (count >= WORKOUT_COSTS.stamina) {
+      unlockedWorkouts.stamina = true;
+    } else if (count >= WORKOUT_COSTS.bench) {
+      unlockedWorkouts.bench = true;
+    } else if (count >= WORKOUT_COSTS.squat) {
+      unlockedWorkouts.squat = true;
+    }
   }
 }
+
 
 function unlockLink(link) {
   if (!link) return;
