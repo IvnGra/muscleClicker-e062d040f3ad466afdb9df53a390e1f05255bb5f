@@ -1,17 +1,26 @@
+// Core Game State
 let count = 0;
 let clickPower = 1;
 let autoClickers = 0;
 let multiplier = 1;
+let baseClickPower = 1;
+
 
 let clickUpgradeCost = 10;
 let autoClickerCost = 50;
 let multiplierCost = 200;
 
+const WORKOUT_COSTS = {
+  stamina: 1000,
+  bench: 2000,
+  squat: 3000
+};
+
 let clickUpgradeLevel = 0;
 let autoClickerLevel = 0;
 let multiplierLevel = 0;
 
-const MAX_CLICK_UPGRADES = 5;
+const MAX_CLICK_UPGRADES = 10;
 const MAX_AUTOCLICKERS = 10;
 const MAX_MULTIPLIERS = 2;
 
@@ -21,8 +30,6 @@ let unlockedWorkouts = {
   squat: false
 };
 
-<<<<<<< HEAD
-// DOM Elements
 const countDisplay = document.getElementById('count');
 const clickImg = document.getElementById('cookie');
 const clickUpgradeCostDisplay = document.getElementById('clickUpgradeCost');
@@ -32,36 +39,6 @@ const staminaLink = document.getElementById("stamina-link");
 const benchLink = document.getElementById("bench-link");
 const squatLink = document.getElementById("squat-link");
 const autoBtn = document.getElementById('auto-btn');
-=======
-    function buyAutoClicker() {
-      if (count >= autoClickerCost) {
-        count -= autoClickerCost;
-        autoClickers += 1;
-        autoClickerCost = Math.floor(autoClickerCost * 1.7);
-        updateDisplay();
-      }else{
-        alert("you are poor, grind a bit and return")
-      }
-    }
-    function buyMultyplier() {
-      if (count >= multiplierCost) {
-        count -= multiplierCost;
-        multiplier *= 1.5; 
-        clickPower *= matchMedia.floor(multiplier); // apply multiplier to clickPower
-        multiplierCost = Math.floor(multiplierCost * 2.5);
-        updateDisplay();
-      } else {
-        alert("you are poor, grind a bit and return");
-      }
-    }
-    
-    function updateDisplay() {
-      countDisplay.textContent = count;
-      clickUpgradeCostDisplay.textContent = clickUpgradeCost;
-      autoClickerCostDisplay.textContent = autoClickerCost;
-      multiplierCostDisplay.textContent = multiplierCost;
-    }
->>>>>>> 8e7e20d72a4a6c1fda32e30e631ee7825821da53
 
 // Click Logic
 clickImg.addEventListener('click', () => {
@@ -70,16 +47,20 @@ clickImg.addEventListener('click', () => {
   unlockPages();
 });
 
-
-// Upgrades
 function buyClickUpgrade() {
+  if (clickUpgradeLevel >= MAX_CLICK_UPGRADES) {
+    alert("Max click upgrades reached!");
+    return;
+  }
   if (count >= clickUpgradeCost) {
     count -= clickUpgradeCost;
-    clickPower += 1;
+    clickUpgradeLevel++;
+    baseClickPower += 1;
+    clickPower = baseClickPower * multiplier;
     clickUpgradeCost = Math.floor(clickUpgradeCost * 1.5);
     updateDisplay();
   } else {
-    alert("you are poor, grind a bit and return");
+    alert("You are poor, grind a bit and return");
   }
 }
 
@@ -90,12 +71,12 @@ function buyAutoClicker() {
   }
   if (count >= autoClickerCost) {
     count -= autoClickerCost;
-    autoClickers += 1;
     autoClickerLevel++;
+    autoClickers += 1;
     autoClickerCost = Math.floor(autoClickerCost * 1.7);
     updateDisplay();
   } else {
-    alert("Not enough clicks!");
+    alert("You need more power");
   }
 }
 
@@ -106,32 +87,37 @@ function buyMultiplier() {
   }
   if (count >= multiplierCost) {
     count -= multiplierCost;
-    multiplier *= 1.5;
-    clickPower = Math.floor(clickPower * 1.5);
     multiplierLevel++;
+    multiplier *= 1.5;
+
+    // Ensure baseClickPower is at least 1
+    if (baseClickPower < 1) baseClickPower = 1;
+
+    clickPower = baseClickPower * multiplier;
+
     multiplierCost = Math.floor(multiplierCost * 2.5);
     updateDisplay();
   } else {
-    alert("Not enough clicks!");
+    alert("You need more power");
   }
 }
 
-// Display Update
+
 function updateDisplay() {
   countDisplay.textContent = count;
   clickUpgradeCostDisplay.textContent = clickUpgradeLevel >= MAX_CLICK_UPGRADES ? "MAX" : clickUpgradeCost;
   autoClickerCostDisplay.textContent = autoClickerLevel >= MAX_AUTOCLICKERS ? "MAX" : autoClickerCost;
   multiplierCostDisplay.textContent = multiplierLevel >= MAX_MULTIPLIERS ? "MAX" : multiplierCost;
 
-  if (count >= 1000 || unlockedWorkouts.stamina) {
+  if (count >= WORKOUT_COSTS.stamina || unlockedWorkouts.stamina) {
     unlockedWorkouts.stamina = true;
     unlockLink(staminaLink);
   }
-  if (count >= 2000 || unlockedWorkouts.bench) {
+  if (count >= WORKOUT_COSTS.bench || unlockedWorkouts.bench) {
     unlockedWorkouts.bench = true;
     unlockLink(benchLink);
   }
-  if (count >= 3000 || unlockedWorkouts.squat) {
+  if (count >= WORKOUT_COSTS.squat || unlockedWorkouts.squat) {
     unlockedWorkouts.squat = true;
     unlockLink(squatLink);
   }
@@ -147,13 +133,13 @@ function unlockLink(link) {
   if (costText) costText.remove();
 }
 
-// Auto Click
+// Auto Click Logic
 setInterval(() => {
   count += autoClickers;
   updateDisplay();
 }, 1000);
 
-// Save / Load
+// Game Save/Load
 function saveGame() {
   const saveData = {
     count,
@@ -182,78 +168,84 @@ function loadGame() {
     autoClickerCost = saveData.autoClickerCost || 50;
     multiplierCost = saveData.multiplierCost || 500;
     multiplier = saveData.multiplier || 1;
-
-    if (saveData.purchasedSponsors) {
-      saveData.purchasedSponsors.forEach(id => {
-        purchasedSponsors.add(id);
-        const img = document.getElementById(id);
-        if (img) img.style.display = "inline-block";
-
-        document.querySelectorAll(".sponsor-btn").forEach(btn => {
-          if (btn.textContent.trim().startsWith(getSponsorNameById(id))) {
-            btn.disabled = true;
-            btn.textContent += " ✔";
-            btn.style.opacity = "0.6";
-            btn.style.cursor = "not-allowed";
-          }
-        });
-      });
-    }
-
+    clickUpgradeLevel = saveData.clickUpgradeLevel || 0;
+    autoClickerLevel = saveData.autoClickerLevel || 0;
+    multiplierLevel = saveData.multiplierLevel || 0;
+    unlockedWorkouts = saveData.unlockedWorkouts || {};
     updateDisplay();
     unlockPages();
   }
 }
 
-
-// Reset
 function resetGame() {
   count = 0;
-  clickPower = 1;
-  autoClickers = 0;
+
+  baseClickPower = 1;
   multiplier = 1;
+  clickPower = baseClickPower * multiplier;
+  autoClickers = 0;
+
   clickUpgradeCost = 10;
   autoClickerCost = 50;
   multiplierCost = 200;
+
   clickUpgradeLevel = 0;
   autoClickerLevel = 0;
   multiplierLevel = 0;
+
   unlockedWorkouts = {
     stamina: false,
     bench: false,
     squat: false
   };
+
   localStorage.removeItem('strengthClickerSave');
+
+  // Manually reset the cost displays
+  clickUpgradeCostDisplay.textContent = clickUpgradeCost;
+  autoClickerCostDisplay.textContent = autoClickerCost;
+  multiplierCostDisplay.textContent = multiplierCost;
+
+  // If buttons were disabled or text changed, re-enable & reset them
+  autoBtn.disabled = false;
+  autoBtn.textContent = `Buy AutoClicker (Cost: ${autoClickerCost})`;
+  autoBtn.style.opacity = "1";
+  autoBtn.style.cursor = "pointer";
+
+  const multiplierBtn = document.getElementById('multiplier-btn');
+  if (multiplierBtn) {
+    multiplierBtn.disabled = false;
+    multiplierBtn.textContent = `Buy Multiplier (Cost: ${multiplierCost})`;
+    multiplierBtn.style.opacity = "1";
+    multiplierBtn.style.cursor = "pointer";
+  }
+
   updateDisplay();
 }
 
-// Auto-save and Load
+
+
+
 setInterval(saveGame, 5000);
 window.addEventListener('beforeunload', saveGame);
 window.addEventListener('load', loadGame);
 
-// Navigation link clears save
-document.querySelectorAll('nav a').forEach(link => {
-  link.addEventListener('click', (e) => {
-    const href = link.getAttribute('href');
-    if (["bench.html", "squat.html", "stamina.html"].includes(href)) {
-      localStorage.removeItem('strengthClickerSave');
-    }
-  });
-});
+function unlockPages() {
+  if (count >= WORKOUT_COSTS.stamina) unlockLink(staminaLink);
+  if (count >= WORKOUT_COSTS.bench) unlockLink(benchLink);
+  if (count >= WORKOUT_COSTS.squat) unlockLink(squatLink);
+} 
 
-// PERKS: Example implementation hints
-// You could assign bonuses depending on workout when page loads:
 function applyWorkoutPerk(workout) {
   switch (workout) {
     case "stamina":
-      autoClickers += 2; // starts with extra auto click
+      autoClickers += 2;
       break;
     case "bench":
-      clickPower += 2; // extra base click power
+      clickPower += 2;
       break;
     case "squat":
-      setInterval(() => count += 5, 2000); // passive boost
+      setInterval(() => count += 5, 2000);
       break;
   }
 }
@@ -302,7 +294,6 @@ function resetSponsors() {
   purchasedSponsors.clear();
 }
 
-<<<<<<< HEAD
 function unlockPages() {
   const staminaLink = document.getElementById("stamina-link");
   const benchLink = document.getElementById("bench");
@@ -331,15 +322,55 @@ function unlockLink(link) {
 document.querySelectorAll('nav a').forEach(link => {
   const href = link.getAttribute('href');
   if (["bench.html", "squat.html", "stamina.html"].includes(href)) {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault(); // stop default navigation
+
+      // Reset all game progress
+      count = 0;
+      baseClickPower = 1;
+      multiplier = 1;
+      clickPower = 1;
+      autoClickers = 0;
+
+      clickUpgradeCost = 10;
+      autoClickerCost = 50;
+      multiplierCost = 200;
+
+      clickUpgradeLevel = 0;
+      autoClickerLevel = 0;
+      multiplierLevel = 0;
+
+      unlockedWorkouts = {
+        stamina: false,
+        bench: false,
+        squat: false
+      };
+
+      // Reset sponsors
+      purchasedSponsors.clear();
+      sponsorButtons.forEach(button => {
+        button.disabled = false;
+        const name = button.textContent.split("✔")[0].trim();
+        button.textContent = name;
+        button.style.opacity = "1";
+        button.style.cursor = "pointer";
+      });
+
+      Object.values(sponsorImages).forEach(imgId => {
+        const img = document.getElementById(imgId);
+        if (img) img.style.display = "none";
+      });
+
       localStorage.removeItem('strengthClickerSave');
+
+      // Then go to the workout page
+      window.location.href = href;
     });
   }
 });
 
+
 // Sponsor logic
-=======
->>>>>>> 8e7e20d72a4a6c1fda32e30e631ee7825821da53
 const sponsorButtons = document.querySelectorAll(".sponsor-btn");
 const sponsorImages = {
   "myFitness": "myfitness",
