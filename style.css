@@ -377,11 +377,11 @@ border-width: 5px;
 }
 
 .disabled-link {
-pointer-events: none;
-color: gray;
-opacity: 0.6;
-text-decoration: none;
+  pointer-events: none;
+  opacity: 0.4;
+  color: gray;
 }
+
 
 .reset-btn{
 padding: 10px 20px;
