@@ -44,7 +44,7 @@ let count = 0;
       if (count >= multiplierCost) {
         count -= multiplierCost;
         multiplier *= 1.5; 
-        clickPower *= multiplier; // apply multiplier to clickPower
+        clickPower *= matchMedia.floor(multiplier); // apply multiplier to clickPower
         multiplierCost = Math.floor(multiplierCost * 2.5);
         updateDisplay();
       } else {
@@ -141,7 +141,6 @@ function resetClicks() {
 } 
 
 function resetUpgrades() {
-  count = 0;
   clickPower = 1;
   autoClickers = 0;
   clickUpgradeCost = 10;
@@ -151,6 +150,23 @@ function resetUpgrades() {
 
   localStorage.removeItem('strengthClickerSave'); // clear saved progress
   updateDisplay(); // refresh UI
+}
+
+function resetSponsors() {
+  sponsorButtons.forEach(button => {
+    button.disabled = false;
+    const name = button.textContent.split("✔")[0].trim();
+    button.textContent = name;
+    button.style.opacity = "1";
+    button.style.cursor = "pointer";
+  });
+
+  Object.values(sponsorImages).forEach(imgId => {
+    const img = document.getElementById(imgId);
+    if (img) img.style.display = "none";
+  });
+
+  purchasedSponsors.clear();
 }
 
 const sponsorButtons = document.querySelectorAll(".sponsor-btn");
