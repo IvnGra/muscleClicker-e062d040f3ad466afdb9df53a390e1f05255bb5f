@@ -377,11 +377,11 @@ border-width: 5px;
 }
 
 .disabled-link {
-  pointer-events: none;
-  opacity: 0.4;
-  color: gray;
+pointer-events: none;
+color: gray;
+opacity: 0.6;
+text-decoration: none;
 }
-
 
 .reset-btn{
 padding: 10px 20px;
@@ -477,6 +477,3 @@ display: grid;
 grid-template-columns: repeat(2, 1fr); /* 2 buttons per row */
 gap: 10px; /* spacing between buttons */
 }
-
-
-
