@@ -21,6 +21,7 @@ let unlockedWorkouts = {
   squat: false
 };
 
+<<<<<<< HEAD
 // DOM Elements
 const countDisplay = document.getElementById('count');
 const clickImg = document.getElementById('cookie');
@@ -31,6 +32,36 @@ const staminaLink = document.getElementById("stamina-link");
 const benchLink = document.getElementById("bench-link");
 const squatLink = document.getElementById("squat-link");
 const autoBtn = document.getElementById('auto-btn');
+=======
+    function buyAutoClicker() {
+      if (count >= autoClickerCost) {
+        count -= autoClickerCost;
+        autoClickers += 1;
+        autoClickerCost = Math.floor(autoClickerCost * 1.7);
+        updateDisplay();
+      }else{
+        alert("you are poor, grind a bit and return")
+      }
+    }
+    function buyMultyplier() {
+      if (count >= multiplierCost) {
+        count -= multiplierCost;
+        multiplier *= 1.5; 
+        clickPower *= matchMedia.floor(multiplier); // apply multiplier to clickPower
+        multiplierCost = Math.floor(multiplierCost * 2.5);
+        updateDisplay();
+      } else {
+        alert("you are poor, grind a bit and return");
+      }
+    }
+    
+    function updateDisplay() {
+      countDisplay.textContent = count;
+      clickUpgradeCostDisplay.textContent = clickUpgradeCost;
+      autoClickerCostDisplay.textContent = autoClickerCost;
+      multiplierCostDisplay.textContent = multiplierCost;
+    }
+>>>>>>> 8e7e20d72a4a6c1fda32e30e631ee7825821da53
 
 // Click Logic
 clickImg.addEventListener('click', () => {
@@ -232,7 +263,6 @@ function resetClicks() {
 }
 
 function resetUpgrades() {
-  count = 0;
   clickPower = 1;
   autoClickers = 0;
   clickUpgradeCost = 10;
@@ -272,6 +302,7 @@ function resetSponsors() {
   purchasedSponsors.clear();
 }
 
+<<<<<<< HEAD
 function unlockPages() {
   const staminaLink = document.getElementById("stamina-link");
   const benchLink = document.getElementById("bench");
@@ -307,6 +338,8 @@ document.querySelectorAll('nav a').forEach(link => {
 });
 
 // Sponsor logic
+=======
+>>>>>>> 8e7e20d72a4a6c1fda32e30e631ee7825821da53
 const sponsorButtons = document.querySelectorAll(".sponsor-btn");
 const sponsorImages = {
   "myFitness": "myfitness",
