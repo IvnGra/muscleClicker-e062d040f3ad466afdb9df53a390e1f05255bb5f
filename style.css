@@ -1,0 +1,482 @@
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  margin: 0;
+}
+:root {
+--primary-color: #2c3e50;
+--secondary-color: #3498db;
+--background-color: #ecf0f1;
+--text-color: #333;
+--hover-color: #2980b9;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+html, body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+.section {
+  padding: 20px;
+  color: white;
+  overflow: auto;
+}
+
+.left {
+  background-color: #2c5d8d;
+  flex: 1;
+}
+
+.middle {
+  background-image: url('https://static.vecteezy.com/system/resources/thumbnails/025/851/940/small_2x/bodybuilder-male-figure-icon-gym-logo-template-athletic-man-sign-white-silhouette-on-black-background-illustration-vector.jpg');
+  background-size: cover; /* or contain */
+  background-repeat: no-repeat;
+  background-position: center center;
+  flex: 2;
+}
+
+.right {
+  background-color: #2c5d8d;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+.click-area, .upgrade-area {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.click-area {
+  background-color: #337ec9;
+  border-radius: 30px;
+}
+
+.upgrade-area {
+  background-color: #1E90FF;
+  border-radius: 20px;
+  border-style: solid;
+}
+
+#cookie {
+  width: 200px;
+  cursor: pointer;
+}
+
+.counter {
+  font-size: 2em;
+  margin: 20px 0;
+}
+
+.upgrade-btn {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background: #c0b024;
+  color: rgb(255, 255, 255);
+  transition: background 0.3s ease;
+  border-style: solid;
+  border-color: rgb(255, 255, 255);
+  width: 300px;
+}
+
+.upgrade-btn:hover {
+  background: #2980b9;
+}
+
+.upgrades{
+  display: grid;
+  justify-content: center;
+  margin: 10px;
+}
+
+.click-area{
+  margin-bottom: 50px;
+  border-style: solid;
+}
+
+@media (min-width: 768px) {
+  .nav-menu {
+    width: 750px;
+  }
+}
+/*Medium Screens */
+@media (min-width: 922px) {
+  .nav-menu {
+    width: 970px;
+  }
+}
+/*Large Screens */
+@media (min-width: 1200px) {
+  .nav-menu {
+    width: 1170px;
+  }
+}
+
+/* Burger Icon Container */
+.burger-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  cursor: pointer;
+  width: 40px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px;
+  border-radius: 5px;
+  background: hwb(0 100% 0% / 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px #0000001a;
+}
+
+/* Burger Icon Lines */
+.burger-line {
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  transform-origin: center;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Checkbox Hack */
+#burger-toggle {
+  display: none;
+}
+
+/* Navigation Styles */
+.nav-menu {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #273849 100%);
+  transition: right 0.4s cubic-bezier(0.77, 0.2, 0.05, 1);
+  box-shadow: -4px 0 15px #00000033;
+  overflow-y: auto;
+  padding-top: 100px;
+}
+
+.nav-menu::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #ffffff0d;
+  backdrop-filter: blur(10px);
+}
+
+.nav-menu ul {
+  list-style-type: none;
+}
+
+.nav-menu ul li {
+  margin: 0 15px;
+  border-bottom: 1px solid #ffffff1a;
+}
+
+.nav-menu ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 15px;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-menu ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background-color: var(--secondary-color);
+  transition: left 0.3s ease;
+}
+
+.nav-menu ul li a:hover::after {
+  left: 0;
+}
+
+/* Burger Icon Animation on Checkbox Checked */
+#burger-toggle:checked ~ .burger-container .burger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+#burger-toggle:checked ~ .burger-container .burger-line:nth-child(2) {
+  opacity: 0;
+}
+
+#burger-toggle:checked ~ .burger-container .burger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Navigation Slide In */
+#burger-toggle:checked ~ .nav-menu {
+  right: 0;
+}
+
+.middle h1{
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+  color: black;
+  text-shadow: 2px 2px 0px white,
+  -2px -2px 0px white,  
+  2px -2px 0px white,   
+  -2px 2px 0px white;   
+
+}
+
+.start{
+  display: flex;
+  justify-content: center;
+  columns: center;
+  position: relative;
+  margin-bottom: 70px;
+  padding-top: 50px;
+  font-size: 70px;
+}
+
+.heading-two{
+  position: absolute;
+  margin-top: 55px;
+  background-color: white;
+  color: black;
+}
+
+.muscle-button{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 30px 180px;
+  margin: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background: #c0b024;
+  color: rgb(255, 255, 255);
+  transition: background 0.3s ease;
+  border-style: solid;
+  border-color: black; 
+  width: 300px;
+  margin-top: 50px;
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.muscle-button:hover{ 
+  background: #2980b9;
+}
+
+.container-box{ 
+  justify-content: center ;
+  justify-items: center;
+  width: 100vh;
+  height: 40vh;
+  background-color:rgba(224, 140, 30, 0.521) ;
+  border-radius: 15px;
+  border-color: black;
+  border: solid;
+  border-width: 5px;
+}
+
+.muscle-buttons{
+display: flex;
+flex-direction: row;
+text-decoration: none;
+}
+
+li{
+margin-top: 20px;
+font-size: 40px;
+}
+
+.rules{
+font-size: 80px;
+}
+
+.back-button{
+display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 30px 180px;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background: #c0b024;
+  color: rgb(255, 255, 255);
+  transition: background 0.3s ease;
+  border-style: solid;
+  border-color: black;
+  width: 300px;
+  margin-top: 50px;
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.container-boxs{ 
+justify-content: center ;
+justify-items: center;
+width: 100vh;
+height: 50vh;
+background-color:rgba(224, 140, 30, 0.521) ;
+border-radius: 15px;
+border-color: black;
+border: solid;
+border-width: 5px;
+}
+
+.disabled-link {
+pointer-events: none;
+color: gray;
+opacity: 0.6;
+text-decoration: none;
+}
+
+.reset-btn{
+padding: 10px 20px;
+margin: 10px;
+font-size: 1em;
+cursor: pointer;
+border: none;
+border-radius: 10px;
+background: #ff0000;
+color: rgb(255, 255, 255);
+transition: background 0.3s ease;
+border-style: solid;
+border-color: rgb(0, 0, 0);
+width: 300px;
+}
+
+.reset-btn:hover {
+background: #ff5e02;
+}
+
+
+.reset-area{
+flex: 1;
+padding: 40px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+background-color: #1E90FF;
+border-radius: 20px;
+border-style: solid;
+}
+
+.reset{
+flex: 1;
+padding: 40px;
+margin-top: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+.pic-area img {
+width: 250px;
+height: 150px;
+object-fit: contain; /* keeps aspect ratio without stretching */
+margin: 10px;
+}
+
+.pic-area{
+flex: 1;
+padding: 40px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+background-color: #a8445d;
+border-radius: 20px;
+border-style: solid;
+border-color: whitesmoke;
+}
+
+.sponsor-btn{
+display: flex;
+padding: 10px 20px;
+margin: 10px;
+font-size: 1em;
+cursor: pointer;
+border: none;
+border-radius: 10px;
+background: #0b8a1c;
+color: rgb(255, 255, 255);
+transition: background 0.3s ease;
+border-style: solid;
+border-color: rgb(0, 0, 0);
+width: 300px;
+}
+
+.sponsor-btn:hover{
+background: #a6da2f;
+}
+
+.pic-area img {
+display: none;
+width: 120px;
+height: auto;
+object-fit: contain;
+margin: 5px;
+}
+.sponsor-area {
+display: grid;
+grid-template-columns: repeat(2, 1fr); /* 2 buttons per row */
+gap: 10px; /* spacing between buttons */
+}
+
+
+

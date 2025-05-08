@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muscle Clicker Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <input type="checkbox" id="burger-toggle">
+  <!-- Burger Icon -->
+  <label for="burger-toggle" class="burger-container">
+    <div class="burger-line"></div>
+    <div class="burger-line"></div>
+    <div class="burger-line"></div>
+  </label>
+  <!-- Navigation Menu -->
+  <nav class="nav-menu">
+    <ul>
+      <li><a  href="power.html">Power</a></li>
+      <li><a  href="stamina.html">Stamina</a></li>
+      <li><a id="bench" class="disabled-link" href="bench.html"><b>Bench</b></a></li>
+      <li><a id="squat-link" class="disabled-link" href="squat.html">Squat</a></li>
+    </ul>
+  </nav>
+    <div class="container">
+        <div class="section left">
+            <div class="click-area">
+                <img id="cookie" src="https://pngimg.com/d/powerlifting_PNG26.png" alt="bench">
+                <div class="counter">Bench: <span id="count">0</span></div>
+            </div>
+        </div>
+    
+        <div class="section middle">
+            <h1>Muscle Clicker</h1>
+        </div>
+    
+        <div class="section right">
+            <h2 class="upgrades">Upgrades</h2>
+            <div class="upgrade-area">
+                <button class="upgrade-btn" onclick="buyClickUpgrade()">Buy +1 Bench Click  (Cost: <span id='clickUpgradeCost'>10</span>)</button>
+                <button class="upgrade-btn" onclick="buyAutoClicker()">Buy AutoClicker (Cost: <span id='autoClickerCost'>50</span>)</button>
+                <button class="upgrade-btn" onclick="buyMultyplier()">Buy multiplier (Cost: <span id='multiplierCost'>200</span>)</button>
+            </div>
+          </div>
+          <h2 class="reset">Reset</h2>
+          <div class="reset-area">
+              <button class="reset-btn" onclick="resetUpgrades()">Reset upgrades</button>
+              <button class="reset-btn" onclick="resetClicks()">reset clicks</button>
+          </div>
+          <h2 class="reset">sponsors</h2>
+          <div class="reset-area">
+            <button class="sponsor-btn">myFitness  (cost: 250)</button>
+            <button class="sponsor-btn">fitness24/7 (cost: 250)</button>
+            <button class="sponsor-btn">HC Gym (cost: 250)</button>
+            <button class="sponsor-btn">gymshark (cost: 250)</button>
+            <button class="sponsor-btn">siberia (cost: 250)</button>
+            <button class="sponsor-btn">monster (cost: 250)</button>
+          </div>
+        </div>
+      </div>
+    <script src="index.js"></script>
+</body>
+</html>
